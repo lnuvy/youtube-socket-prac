@@ -1,15 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/profile_img.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { registerRoute } from "../utils/APIRoutes";
 
 function Register() {
-  const handleChange = (e) => {};
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("form");
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 3000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
+  const handleValid = () => {
+    const { password, confirmPassword, username, email } = values;
+    if (password !== confirmPassword) {
+      toast.error("Password, confirm should be same.", toastOptions);
+      return false;
+    } else if (username.length < 3) {
+      toast.error("Username should be greater than 3 characters", toastOptions);
+      return false;
+    } else if (password.length < 5) {
+      toast.error("Password should be greater than 5 characters", toastOptions);
+      return false;
+    } else if (email === "") {
+      toast.error("email is required", toastOptions);
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (handleValid()) {
+      const { password, confirmPassword, username, email } = values;
+      const { data } = await axios.post(registerRoute, {
+        username,
+        email,
+        password,
+      });
+    }
+  };
+
   return (
     <>
       <FormContainer>
@@ -48,6 +94,7 @@ function Register() {
           </span>
         </form>
       </FormContainer>
+      <ToastContainer />
     </>
   );
 }
