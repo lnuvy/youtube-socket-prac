@@ -6,9 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { loginRoute } from "../utils/APIRoutes";
+import { history } from "../redux/configureStore";
 
 function Login() {
-  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -28,7 +28,7 @@ function Login() {
 
   useEffect(() => {
     if (localStorage.getItem("chat-app-user")) {
-      navigate("/");
+      history.push("/");
     }
   }, []);
 
@@ -56,7 +56,7 @@ function Login() {
         toast.error(data.msg, toastOptions);
       } else {
         localStorage.setItem("chat-app-user", JSON.stringify(data.user));
-        navigate("/");
+        history.push("/");
       }
     }
   };

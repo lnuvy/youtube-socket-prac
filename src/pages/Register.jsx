@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/profile_img.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { registerRoute } from "../utils/APIRoutes";
+import { history } from "../redux/configureStore";
 
 function Register() {
-  const navigate = useNavigate();
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -30,7 +30,7 @@ function Register() {
 
   useEffect(() => {
     if (localStorage.getItem("chat-app-user")) {
-      navigate("/");
+      history.push("/");
     }
   }, []);
 
@@ -64,7 +64,7 @@ function Register() {
         toast.error(data.msg, toastOptions);
       } else {
         localStorage.setItem("chat-app-user", JSON.stringify(data.user));
-        navigate("/");
+        history.push("/");
       }
     }
   };

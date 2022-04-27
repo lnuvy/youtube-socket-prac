@@ -1,20 +1,22 @@
+import { ConnectedRouter } from "connected-react-router";
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SetAvatar from "./pages/SetAvatar";
+import { history } from "./redux/configureStore";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/setAvatar" element={<SetAvatar />} />
-        <Route path="/" element={<Chat />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <ConnectedRouter history={history}>
+        <Route path="/register" exact element={Register} />
+        <Route path="/login" exact element={Login} />
+        <Route path="/setAvatar" exact element={SetAvatar} />
+        <Route path="/" exact element={Chat} />
+      </ConnectedRouter>
+    </>
   );
 }
 

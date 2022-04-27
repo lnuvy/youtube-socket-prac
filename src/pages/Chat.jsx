@@ -1,19 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contacts from "../components/Contacts";
+import { history } from "../redux/configureStore";
 import { allUsersRoute } from "../utils/APIRoutes";
 
 function Chat() {
-  const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
 
   useEffect(() => {
     if (!localStorage.getItem("chat-app-user")) {
-      navigate("/login");
+      history.push("/login");
     } else {
       setCurrentUser(JSON.parse(localStorage.getItem("chat-app-user")));
     }
@@ -29,7 +28,7 @@ function Chat() {
           );
           setContacts(data);
         } else {
-          navigate("/setAvatar");
+          history.push("/setAvatar");
         }
       }
     }

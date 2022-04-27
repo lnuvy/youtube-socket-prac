@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loader from "../assets/loader.gif";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,10 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { setAvatarRoute } from "../utils/APIRoutes";
 import { Buffer } from "buffer";
+import { history } from "../redux/configureStore";
 
 function SetAvatar() {
   const api = "https://api.multiavatar.com/45678945";
-  const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
@@ -25,7 +24,7 @@ function SetAvatar() {
 
   useEffect(() => {
     if (!localStorage.getItem("chat-app-user")) {
-      navigate("/login");
+      history.push("/login");
     }
   }, []);
 
@@ -42,7 +41,7 @@ function SetAvatar() {
         user.isAvatarImageSet = true;
         user.avatarImage = data.image;
         localStorage.setItem("chat-app-user", JSON.stringify(user));
-        navigate("/");
+        history.push("/");
       } else {
         toast.error("Error setting avatar. Please try again", toastOptions);
       }
