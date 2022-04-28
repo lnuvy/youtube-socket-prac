@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ToastMessage from "./components/ToastMessage";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -14,6 +15,7 @@ function App() {
         <Route path="/setAvatar" element={<SetAvatar />} />
         <Route path="/" element={<Chat />} />
       </Routes>
+      <ToastMessage />
     </BrowserRouter>
   );
 }

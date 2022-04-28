@@ -8,14 +8,16 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   useEffect(() => {
-    console.log(contacts);
     if (currentUser) {
       setCurrentUserImage(currentUser.avatarImage);
       setCurrentUserName(currentUser.username);
     }
   }, [currentUser]);
 
-  const changeCurrentChat = (index, contact) => {};
+  const changeCurrentChat = (index, contact) => {
+    setCurrentSelected(index);
+    changeChat(contact);
+  };
 
   return (
     <>
@@ -33,6 +35,7 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
                     i === currentSelected ? "selected" : ""
                   }`}
                   key={i}
+                  onClick={() => changeCurrentChat(i, contact)}
                 >
                   <div className="avatar">
                     <img
