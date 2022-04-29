@@ -8,7 +8,13 @@ import axios from "axios";
 import { loginRoute } from "../utils/APIRoutes";
 import { history } from "../redux/configureStore";
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMessage } from "../redux/modules/ToastMesage";
+
 function Login() {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -35,7 +41,8 @@ function Login() {
   const handleValid = () => {
     const { password, email } = values;
     if (password === "") {
-      toast.error("Password is required", toastOptions);
+      // toast.error("Password is required", toastOptions);
+      dispatch(fetchMessage({ Message: true, text: "Password is required" }));
       return false;
     } else if (email === "") {
       toast.error("email is required", toastOptions);

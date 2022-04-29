@@ -1,22 +1,36 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
-import { history } from "../redux/configureStore";
-import { allUsersRoute } from "../utils/APIRoutes";
+import Welcome from "../components/Welcome";
+import { allUsersRoute, host } from "../utils/APIRoutes";
+import { io } from "socket.io-client";
 
 function Chat() {
+  const socket = useRef();
+  const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem("chat-app-user")) {
       history.push("/login");
     } else {
       setCurrentUser(JSON.parse(localStorage.getItem("chat-app-user")));
+      setIsLoaded(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add_user", currentUser._id);
+    }
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -48,6 +62,15 @@ function Chat() {
             currentUser={currentUser}
             changeChat={handleChatChange}
           />
+          {isLoaded && currentChat ? (
+            <ChatContainer
+              currentChat={currentChat}
+              currentUser={currentUser}
+              socket={socket}
+            />
+          ) : (
+            <Welcome currentUser={currentUser} />
+          )}
         </div>
       </Conatiner>
     </>
