@@ -23,8 +23,8 @@ const ToastMessageStyle = styled.div`
   max-width: 768px;
   height: 76px;
   text-align: center;
-  background-color: tomato;
-  border-radius: 14px;
+  background-color: green;
+  border-radius: 200px;
   position: fixed;
   z-index: 10;
   bottom: 160px;
